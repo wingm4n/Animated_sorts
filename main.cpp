@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // Set application metadata
-    app.setApplicationName("ModernWidgetApp");
+    app.setApplicationName("Animated Sort");
     app.setApplicationVersion("1.0.0");
-    app.setOrganizationName("YourCompany");
+    app.setOrganizationName("wingm4n");
 
     // Load and set application font (optional - for consistent typography)
     QFont defaultFont("Segoe UI", 10);
@@ -83,6 +83,8 @@ int main(int argc, char *argv[])
     )";
     app.setStyleSheet(globalStyle);
     */
+
+    app.setQuitOnLastWindowClosed(true);
 
     return app.exec();
 }

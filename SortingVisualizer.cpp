@@ -1,9 +1,10 @@
-#include "SortingVisualizer.h"
 #include <QPainter>
 #include <QPainterPath>
 #include <random>
 #include <algorithm>
 #include <chrono>
+#include "SortingAlgorithm.h"
+#include "SortingVisualizer.h"
 
 SortingVisualizer::SortingVisualizer(QWidget *parent)
     : QWidget(parent)
@@ -94,9 +95,12 @@ void SortingVisualizer::startSort()
 
     std::sort(begin, end);
 
-    // Regenerate colors based on new sorted positions
+    // generateGradientColors();
+    // update();
+
     generateGradientColors();
-    update();
+    repaint();  // Force immediate repaint
+    QApplication::processEvents();
 }
 
 void SortingVisualizer::shuffleData()
@@ -149,4 +153,21 @@ void SortingVisualizer::paintEvent(QPaintEvent* event)
     // Draw baseline
     painter.setPen(QPen(QColor(255, 255, 255, 40), 1));
     painter.drawLine(margin, height - margin, width - margin, height - margin);
+}
+
+void SortingVisualizer::sortWithAlgorithm(SortingAlgorithm* algorithm)
+{
+    if (!algorithm) return;
+
+    VisualIterator begin(m_data.begin(), this);
+    VisualIterator end(m_data.end(), this);
+
+    algorithm->sort(begin, end);
+
+    // generateGradientColors();
+    // update();
+
+    generateGradientColors();
+    repaint();  // Force immediate repaint
+    QApplication::processEvents();
 }

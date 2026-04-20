@@ -10,6 +10,10 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include "SortingVisualizer.h"
+#include <QComboBox>
+#include <vector>
+#include <memory>
+#include "SortingAlgorithm.h"
 
 class MainWindow : public QMainWindow
 {
@@ -51,6 +55,12 @@ private:
     bool m_dragging = false;
     QPoint m_dragPosition;
     bool m_maximized = false;
+
+    QComboBox *algorithmComboBox;
+    std::vector<std::unique_ptr<SortingAlgorithm>> m_algorithms;
+    SortingAlgorithm* currentAlgorithm() const;
+
+    void registerAlgorithms();
 };
 
 #endif // MAINWINDOW_H

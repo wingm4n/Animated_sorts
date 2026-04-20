@@ -6,6 +6,9 @@
 #include <QColor>
 #include <QThread>
 #include <QApplication>
+#include <QDebug>
+
+class SortingAlgorithm;
 
 class SortingVisualizer : public QWidget
 {
@@ -24,6 +27,7 @@ public:
 
 public slots:
     void startSort();
+    void sortWithAlgorithm(SortingAlgorithm* algorithm);
     void shuffleData();
 
 protected:
@@ -86,22 +90,27 @@ inline void iter_swap<SortingVisualizer::VisualIterator, SortingVisualizer::Visu
     SortingVisualizer::VisualIterator a,
     SortingVisualizer::VisualIterator b)
 {
-    // Get indices before swap
+    if (!a.widget || !b.widget) return;
+
+    // Get values BEFORE swap for debugging
+    int valA = *a.it;
+    int valB = *b.it;
+
+    // Get indices
     size_t idxA = a.it - a.widget->m_data.begin();
     size_t idxB = b.it - b.widget->m_data.begin();
 
     // Swap values
     std::swap(*a.it, *b.it);
 
-    // Swap corresponding colors so they follow the values
+    // Swap colors
     std::swap(a.widget->m_colors[idxA], a.widget->m_colors[idxB]);
 
+
     // Trigger visualization update
-    if (a.widget) {
-        a.widget->update();
-        QApplication::processEvents();
-        QThread::msleep(a.widget->animationDelay());
-    }
+    a.widget->update();
+    QApplication::processEvents();
+    QThread::msleep(a.widget->animationDelay());
 }
 }
 

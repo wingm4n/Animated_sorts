@@ -12,6 +12,9 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    BubbleSort.h \
+    QuickSort.h \
+    SortingAlgorithm.h \
     SortingVisualizer.h \
     mainwindow.h \
     sorts/cocktailSort.h

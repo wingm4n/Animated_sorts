@@ -4,6 +4,8 @@
 #include <QScreen>
 #include <QWindow>
 #include <QSpinBox>
+#include "CocktailSort.h"
+#include "QuickSort.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -106,6 +108,39 @@ void MainWindow::setupUi()
     QPushButton *btnShuffle = new QPushButton("Shuffle");
     QPushButton *btnGenerate = new QPushButton("New Data");
     QSpinBox *delaySpin = new QSpinBox();
+    algorithmComboBox = new QComboBox();
+
+    algorithmComboBox->setStyleSheet(R"(
+    QComboBox {
+        background-color: #313244;
+        color: #cdd6f4;
+        border: 1px solid #45475a;
+        border-radius: 6px;
+        padding: 6px 12px;
+        min-width: 150px;
+    }
+    QComboBox:hover {
+        background-color: #45475a;
+    }
+    QComboBox::drop-down {
+        border: none;
+    }
+    QComboBox::down-arrow {
+        image: none;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #cdd6f4;
+        margin-right: 8px;
+    }
+    QComboBox QAbstractItemView {
+        background-color: #313244;
+        color: #cdd6f4;
+        border: 1px solid #45475a;
+        selection-background-color: #89b4fa;
+        selection-color: #1e1e2e;
+    }
+)");
+
     delaySpin->setRange(0, 500);
     delaySpin->setValue(50);
     delaySpin->setSuffix(" ms");
@@ -113,6 +148,7 @@ void MainWindow::setupUi()
     controlsLayout->addWidget(btnSort);
     controlsLayout->addWidget(btnShuffle);
     controlsLayout->addWidget(btnGenerate);
+    controlsLayout->addWidget(algorithmComboBox);
     controlsLayout->addStretch();
     controlsLayout->addWidget(new QLabel(""));
     controlsLayout->addWidget(delaySpin);
@@ -150,7 +186,11 @@ void MainWindow::setupUi()
     dashboardLayout->addWidget(largeWidget, 1);  // '1' makes it expand
 
     // Connect buttons
-    connect(btnSort, &QPushButton::clicked, largeWidget, &SortingVisualizer::startSort);
+    connect(btnSort, &QPushButton::clicked, this, [this]() {
+        if (auto* algo = currentAlgorithm()) {
+            largeWidget->sortWithAlgorithm(algo);
+        }
+    });
     connect(btnShuffle, &QPushButton::clicked, largeWidget, &SortingVisualizer::shuffleData);
     connect(btnGenerate, &QPushButton::clicked, [this]() {
         largeWidget->generateRandomData(50);
@@ -272,6 +312,7 @@ void MainWindow::setupUi()
 
     rootLayout->addWidget(titleBar);
     rootLayout->addWidget(mainContent, 1);
+    registerAlgorithms();
 }
 
 void MainWindow::setupTitleBar()
@@ -471,4 +512,24 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
         m_dragging = false;
         event->accept();
     }
+}
+
+void MainWindow::registerAlgorithms()
+{
+    m_algorithms.push_back(std::make_unique<CocktailSort>());
+    m_algorithms.push_back(std::make_unique<QuickSort>());
+    // Add more algorithms here
+
+    for (const auto& algo : m_algorithms) {
+        algorithmComboBox->addItem(algo->name());
+    }
+}
+
+SortingAlgorithm* MainWindow::currentAlgorithm() const
+{
+    int index = algorithmComboBox->currentIndex();
+    if (index >= 0 && index < static_cast<int>(m_algorithms.size())) {
+        return m_algorithms[index].get();
+    }
+    return nullptr;
 }
