@@ -1,0 +1,80 @@
+* {
+    font-family: 'Segoe UI', 'Inter', system-ui, sans-serif;
+}
+
+#CentralWidget {
+    background-color: #1e1e2e;
+    border-radius: 12px;
+    border: 1px solid #313244;
+}
+
+#TitleBar {
+    background-color: #181825;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+#WindowTitle {
+    color: #cdd6f4;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#NavBar {
+    background-color: #181825;
+    border-bottom-left-radius: 12px;
+}
+
+#NavBar QPushButton {
+    background-color: transparent;
+    color: #cdd6f4;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#NavBar QPushButton:hover {
+    background-color: #313244;
+}
+
+#NavBar QPushButton:checked {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+#ContentArea {
+    background-color: #1e1e2e;
+    border-bottom-right-radius: 12px;
+}
+
+QScrollBar:vertical {
+    background: transparent;
+    width: 8px;
+    margin: 0;
+}
+
+QScrollBar::handle:vertical {
+    background: #45475a;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #6c7086;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QToolTip {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 6px;
+    padding: 6px;
+}
