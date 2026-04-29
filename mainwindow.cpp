@@ -1,10 +1,11 @@
-#include "MainWindow.h"
 #include <QFile>
 #include <QApplication>
 #include <QScreen>
 #include <QWindow>
 #include <QSpinBox>
+#include "MainWindow.h"
 #include "CocktailSort.h"
+#include "BubbleSort.h"
 #include "QuickSort.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -63,23 +64,17 @@ void MainWindow::setupUi()
     navLayout->addWidget(navHeader);
 
     // Navigation buttons
-    QPushButton *btnHome = new QPushButton("🏠 Dashboard");
-    QPushButton *btnAnalytics = new QPushButton("📊 Analytics");
-    QPushButton *btnReports = new QPushButton("📈 Reports");
-    QPushButton *btnSettings = new QPushButton("⚙️ Settings");
+    QPushButton *btnHome = new QPushButton("🔮 Dashboard");
+    QPushButton *btnAnalytics = new QPushButton("📃 Source code");
 
     // Make buttons checkable for visual feedback
     btnHome->setCheckable(true);
     btnAnalytics->setCheckable(true);
-    btnReports->setCheckable(true);
-    btnSettings->setCheckable(true);
 
     btnHome->setChecked(true);
 
     navLayout->addWidget(btnHome);
     navLayout->addWidget(btnAnalytics);
-    navLayout->addWidget(btnReports);
-    navLayout->addWidget(btnSettings);
     navLayout->addStretch();
 
     // Bottom section of nav bar (could contain user profile, etc.)
@@ -245,7 +240,7 @@ void MainWindow::setupUi()
     QWidget *analyticsPage = new QWidget();
     QVBoxLayout *analyticsLayout = new QVBoxLayout(analyticsPage);
     analyticsLayout->setContentsMargins(32, 32, 32, 32);
-    QLabel *analyticsLabel = new QLabel("Analytics Dashboard");
+    QLabel *analyticsLabel = new QLabel("Source code viewer");
     analyticsLabel->setStyleSheet("color: #cdd6f4; font-size: 24px; font-weight: bold;");
     analyticsLayout->addWidget(analyticsLabel);
     analyticsLayout->addStretch();
@@ -274,36 +269,16 @@ void MainWindow::setupUi()
     contentStack->addWidget(settingsPage);
 
     // Connect navigation buttons
-    connect(btnHome, &QPushButton::clicked, [this, btnHome, btnAnalytics, btnReports, btnSettings]() {
+    connect(btnHome, &QPushButton::clicked, [this, btnHome, btnAnalytics]() {
         contentStack->setCurrentIndex(0);
         btnHome->setChecked(true);
         btnAnalytics->setChecked(false);
-        btnReports->setChecked(false);
-        btnSettings->setChecked(false);
     });
 
-    connect(btnAnalytics, &QPushButton::clicked, [this, btnHome, btnAnalytics, btnReports, btnSettings]() {
+    connect(btnAnalytics, &QPushButton::clicked, [this, btnHome, btnAnalytics]() {
         contentStack->setCurrentIndex(1);
         btnHome->setChecked(false);
         btnAnalytics->setChecked(true);
-        btnReports->setChecked(false);
-        btnSettings->setChecked(false);
-    });
-
-    connect(btnReports, &QPushButton::clicked, [this, btnHome, btnAnalytics, btnReports, btnSettings]() {
-        contentStack->setCurrentIndex(2);
-        btnHome->setChecked(false);
-        btnAnalytics->setChecked(false);
-        btnReports->setChecked(true);
-        btnSettings->setChecked(false);
-    });
-
-    connect(btnSettings, &QPushButton::clicked, [this, btnHome, btnAnalytics, btnReports, btnSettings]() {
-        contentStack->setCurrentIndex(3);
-        btnHome->setChecked(false);
-        btnAnalytics->setChecked(false);
-        btnReports->setChecked(false);
-        btnSettings->setChecked(true);
     });
 
     // Assemble layout
@@ -518,6 +493,7 @@ void MainWindow::registerAlgorithms()
 {
     m_algorithms.push_back(std::make_unique<CocktailSort>());
     m_algorithms.push_back(std::make_unique<QuickSort>());
+    m_algorithms.push_back(std::make_unique<BubbleSort>());
     // Add more algorithms here
 
     for (const auto& algo : m_algorithms) {

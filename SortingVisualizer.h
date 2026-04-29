@@ -42,7 +42,6 @@ private:
     QColor getColorForValue(int value, int maxValue) const;
 
     friend class VisualIterator;
-    // AND THIS LINE (for the std::iter_swap specialization):
     friend void std::iter_swap<SortingVisualizer::VisualIterator, SortingVisualizer::VisualIterator>(
         SortingVisualizer::VisualIterator a, SortingVisualizer::VisualIterator b);
 };
@@ -91,10 +90,6 @@ inline void iter_swap<SortingVisualizer::VisualIterator, SortingVisualizer::Visu
     SortingVisualizer::VisualIterator b)
 {
     if (!a.widget || !b.widget) return;
-
-    // Get values BEFORE swap for debugging
-    int valA = *a.it;
-    int valB = *b.it;
 
     // Get indices
     size_t idxA = a.it - a.widget->m_data.begin();

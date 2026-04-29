@@ -1,29 +1,41 @@
 #ifndef COCKTAILSORT_H_
 #define COCKTAILSORT_H_
-#include <iostream>
 
-template< class _RandomIt > void cocktailSort( _RandomIt first, _RandomIt last ){
-    last--;
-    while (first <= last) {
-        _RandomIt newLast = first;
-        _RandomIt newFirst = last;
-        for (_RandomIt walker = first; walker < last; walker++){
-            if (*walker > *(walker + 1)){
-                std::swap(*walker, *(walker + 1));
-                newFirst = walker;
+template<class _RandomIt>
+void cocktailSort(_RandomIt first, _RandomIt last) {
+    if (first == last) return;
+
+    // Calculate size
+    auto size = last - first;
+    if (size <= 1) return;
+
+    // Pointers to the current bounds
+    _RandomIt left = first;
+    _RandomIt right = last - 1;  // Points to last element
+
+    while (left < right) {
+        // Forward pass
+        _RandomIt newRight = left;
+        for (_RandomIt walker = left; walker < right; ++walker) {
+            if (*walker > *(walker + 1)) {
+                std::iter_swap(walker, walker + 1);
+                newRight = walker;
             }
         }
-        last = newFirst - 1;
-        
-        for (_RandomIt walker = last; walker >= first; walker--){
-            if (*walker > *(walker + 1)){
-                std::swap(*walker, *(walker + 1));
-                newLast = walker;
+        right = newRight;
+
+        if (left >= right) break;
+
+        // Backward pass
+        _RandomIt newLeft = right;
+        for (_RandomIt walker = right; walker > left; --walker) {
+            if (*(walker - 1) > *walker) {
+                std::iter_swap(walker - 1, walker);
+                newLeft = walker;
             }
         }
-        first = newLast + 1;
+        left = newLeft;
     }
-    return;
 }
 
 #endif

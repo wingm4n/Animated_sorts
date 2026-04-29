@@ -1,0 +1,6 @@
+*.exe
+.qtcreator/
+.vscode/
+A.cpp
+a.exe
+build/

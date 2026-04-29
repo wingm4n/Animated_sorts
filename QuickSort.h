@@ -1,8 +1,8 @@
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
 
-#include "SortingAlgorithm.h"
 #include <algorithm>
+#include "SortingAlgorithm.h"
 
 class QuickSort : public SortingAlgorithm
 {
@@ -13,7 +13,7 @@ public:
         std::sort(begin, end);
     }
 
-    QString name() const override { return "Quick Sort"; }
+    QString name() const override { return "QuickSort"; }
 };
 
 #endif
