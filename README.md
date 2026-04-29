@@ -13,6 +13,7 @@ This repository contains different sorting algorithms implemented in C++ and a v
 6. Add to the the picker in void MainWindow::setupAnalyticsPage() (`algoSourceFiles["BubbleSort"]    = ":/source/bubbleSort.h";`)
 7. Update the build system files and rebuild
 
+# License
 This application uses Qt 6.
 Qt is available under the LGPL v3 license:
 https://www.qt.io/licensing/
