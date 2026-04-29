@@ -9,11 +9,12 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QPoint>
-#include "SortingVisualizer.h"
 #include <QComboBox>
 #include <vector>
 #include <memory>
+#include <QPlainTextEdit>
 #include "SortingAlgorithm.h"
+#include "SortingVisualizer.h"
 
 class MainWindow : public QMainWindow
 {
@@ -61,6 +62,13 @@ private:
     SortingAlgorithm* currentAlgorithm() const;
 
     void registerAlgorithms();
+
+    QComboBox *sourceAlgoPicker;
+    QPlainTextEdit *sourceCodeView;
+    QMap<QString, QString> algoSourceFiles;   // name -> resource path
+
+    void setupAnalyticsPage();
+    void loadSourceCode(const QString &algoName);
 };
 
 #endif // MAINWINDOW_H

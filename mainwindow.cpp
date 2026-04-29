@@ -237,36 +237,7 @@ void MainWindow::setupUi()
     dashboardLayout->addStretch();
 
     // Page 1: Analytics (Placeholder)
-    QWidget *analyticsPage = new QWidget();
-    QVBoxLayout *analyticsLayout = new QVBoxLayout(analyticsPage);
-    analyticsLayout->setContentsMargins(32, 32, 32, 32);
-    QLabel *analyticsLabel = new QLabel("Source code viewer");
-    analyticsLabel->setStyleSheet("color: #cdd6f4; font-size: 24px; font-weight: bold;");
-    analyticsLayout->addWidget(analyticsLabel);
-    analyticsLayout->addStretch();
-
-    // Page 2: Reports (Placeholder)
-    QWidget *reportsPage = new QWidget();
-    QVBoxLayout *reportsLayout = new QVBoxLayout(reportsPage);
-    reportsLayout->setContentsMargins(32, 32, 32, 32);
-    QLabel *reportsLabel = new QLabel("Reports");
-    reportsLabel->setStyleSheet("color: #cdd6f4; font-size: 24px; font-weight: bold;");
-    reportsLayout->addWidget(reportsLabel);
-    reportsLayout->addStretch();
-
-    // Page 3: Settings (Placeholder)
-    QWidget *settingsPage = new QWidget();
-    QVBoxLayout *settingsLayout = new QVBoxLayout(settingsPage);
-    settingsLayout->setContentsMargins(32, 32, 32, 32);
-    QLabel *settingsLabel = new QLabel("Settings");
-    settingsLabel->setStyleSheet("color: #cdd6f4; font-size: 24px; font-weight: bold;");
-    settingsLayout->addWidget(settingsLabel);
-    settingsLayout->addStretch();
-
-    // Add pages to stack
-    contentStack->addWidget(analyticsPage);
-    contentStack->addWidget(reportsPage);
-    contentStack->addWidget(settingsPage);
+    setupAnalyticsPage();
 
     // Connect navigation buttons
     connect(btnHome, &QPushButton::clicked, [this, btnHome, btnAnalytics]() {
@@ -288,6 +259,111 @@ void MainWindow::setupUi()
     rootLayout->addWidget(titleBar);
     rootLayout->addWidget(mainContent, 1);
     registerAlgorithms();
+}
+
+void MainWindow::setupAnalyticsPage()
+{
+    QWidget *page = new QWidget();
+    page->setObjectName("AnalyticsPage");
+    QVBoxLayout *layout = new QVBoxLayout(page);
+    layout->setContentsMargins(32, 32, 32, 32);
+    layout->setSpacing(16);
+
+    // --- Algorithm picker ---
+    QLabel *header = new QLabel("View Original Source Code");
+    header->setStyleSheet("color: #cdd6f4; font-size: 20px; font-weight: bold;");
+    layout->addWidget(header);
+
+    QHBoxLayout *pickerRow = new QHBoxLayout();
+    QLabel *label = new QLabel("Algorithm:");
+    label->setStyleSheet("color: #cdd6f4; font-size: 14px;");
+    sourceAlgoPicker = new QComboBox();
+    sourceAlgoPicker->setMinimumWidth(200);
+    // style the combo box like the other one
+    sourceAlgoPicker->setStyleSheet(R"(
+        QComboBox {
+            background-color: #313244;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            border-radius: 6px;
+            padding: 6px 12px;
+        }
+        QComboBox:hover { background-color: #45475a; }
+        QComboBox::drop-down { border: none; }
+        QComboBox::down-arrow {
+            image: none;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #cdd6f4;
+            margin-right: 8px;
+        }
+        QComboBox QAbstractItemView {
+            background-color: #313244;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            selection-background-color: #89b4fa;
+            selection-color: #1e1e2e;
+        }
+    )");
+
+    pickerRow->addWidget(label);
+    pickerRow->addWidget(sourceAlgoPicker);
+    pickerRow->addStretch();
+    layout->addLayout(pickerRow);
+
+    // --- Source code display ---
+    sourceCodeView = new QPlainTextEdit();
+    sourceCodeView->setReadOnly(true);
+    sourceCodeView->setStyleSheet(R"(
+        QPlainTextEdit {
+            background-color: #181825;
+            color: #cdd6f4;
+            border: 1px solid #45475a;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+    )");
+    layout->addWidget(sourceCodeView, 1);
+
+    // --- Populate the picker ---
+    // The mapping must match exactly the resource aliases
+    algoSourceFiles["BubbleSort"]    = ":/source/bubbleSort.h";
+    algoSourceFiles["CocktailSort"]  = ":/source/cocktailSort.h";
+    // add all other algorithms exactly as named in your dropdown
+
+    for (auto it = algoSourceFiles.begin(); it != algoSourceFiles.end(); ++it) {
+        sourceAlgoPicker->addItem(it.key());
+    }
+
+    connect(sourceAlgoPicker, &QComboBox::currentTextChanged, this, &MainWindow::loadSourceCode);
+
+    // Load first algorithm's code immediately
+    if (sourceAlgoPicker->count() > 0)
+        loadSourceCode(sourceAlgoPicker->currentText());
+
+    contentStack->addWidget(page);
+}
+
+void MainWindow::loadSourceCode(const QString &algoName)
+{
+    QString resourcePath = algoSourceFiles.value(algoName);
+    if (resourcePath.isEmpty()) {
+        sourceCodeView->setPlainText("// Source file not found for " + algoName);
+        return;
+    }
+
+    QFile file(resourcePath);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString code = in.readAll();
+        sourceCodeView->setPlainText(code);
+        file.close();
+    } else {
+        sourceCodeView->setPlainText("// Cannot open " + resourcePath);
+    }
 }
 
 void MainWindow::setupTitleBar()
