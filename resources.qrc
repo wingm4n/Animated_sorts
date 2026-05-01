@@ -3,5 +3,6 @@
         <file alias="bubbleSort.h">sorts/bubbleSort.h</file>
         <file alias="cocktailSort.h">sorts/cocktailSort.h</file>
         <file alias="heapSort.h">sorts/heapSort.h</file>
+        <file alias="shellSort.h">sorts/shellSort.h</file>
     </qresource>
 </RCC>

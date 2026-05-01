@@ -16,13 +16,15 @@ HEADERS += \
     HeapSort.h \
     QuickSort.h \
     CocktailSort.h \
+    ShellSort.h \
     SortingAlgorithm.h \
     SortingVisualizer.h \
     HeapSort.h \
     mainwindow.h \
     sorts/bubbleSort.h \
     sorts/heapSort.h \
-    sorts/cocktailSort.h
+    sorts/cocktailSort.h \
+    sorts/shellSort.h
 
 FORMS += \
     mainwindow.ui

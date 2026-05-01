@@ -8,6 +8,7 @@
 #include "BubbleSort.h"
 #include "QuickSort.h"
 #include "HeapSort.h"
+#include "ShellSort.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -230,11 +231,14 @@ void MainWindow::setupUi()
     welcomeLabel->setStyleSheet("color: #cdd6f4; font-size: 28px; font-weight: bold;");
 
     QLabel *subtitleLabel = new QLabel("Choose a sorting algorithm, then watch it do its job");
-    subtitleLabel->setStyleSheet("color: #6c7086; font-size: 14px; margin-bottom: 32px;");
+    QLabel *subtitleLabel2 = new QLabel("Inspired by Wikipedia's sorting algorithms visualizations");
+    subtitleLabel->setStyleSheet("color: #6c7086; font-size: 14px;");
+    subtitleLabel2->setStyleSheet("color: #6c7086; font-size: 14px;");
 
 
     dashboardLayout->addWidget(welcomeLabel);
     dashboardLayout->addWidget(subtitleLabel);
+    dashboardLayout->addWidget(subtitleLabel2);
     dashboardLayout->addStretch();
 
     // Page 1: Analytics (Placeholder)
@@ -334,6 +338,7 @@ void MainWindow::setupAnalyticsPage()
     algoSourceFiles["BubbleSort"]    = ":/source/bubbleSort.h";
     algoSourceFiles["CocktailSort"]  = ":/source/cocktailSort.h";
     algoSourceFiles["HeapSort"]    = ":/source/heapSort.h";
+    algoSourceFiles["ShellSort"]    = ":/source/shellSort.h";
     // add all other algorithms exactly as named in your dropdown
 
     for (auto it = algoSourceFiles.begin(); it != algoSourceFiles.end(); ++it) {
@@ -569,10 +574,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void MainWindow::registerAlgorithms()
 {
-    m_algorithms.push_back(std::make_unique<CocktailSort>());
-    m_algorithms.push_back(std::make_unique<QuickSort>());
-    m_algorithms.push_back(std::make_unique<BubbleSort>());
+    m_algorithms.push_back(std::make_unique<ShellSort>());
     m_algorithms.push_back(std::make_unique<HeapSort>());
+    m_algorithms.push_back(std::make_unique<QuickSort>());
+    m_algorithms.push_back(std::make_unique<CocktailSort>());
+    m_algorithms.push_back(std::make_unique<BubbleSort>());
+
+
     // Add more algorithms here
 
     for (const auto& algo : m_algorithms) {
