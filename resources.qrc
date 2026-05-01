@@ -2,5 +2,6 @@
     <qresource prefix="/source">
         <file alias="bubbleSort.h">sorts/bubbleSort.h</file>
         <file alias="cocktailSort.h">sorts/cocktailSort.h</file>
+        <file alias="heapSort.h">sorts/heapSort.h</file>
     </qresource>
 </RCC>

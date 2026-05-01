@@ -7,6 +7,7 @@
 #include "CocktailSort.h"
 #include "BubbleSort.h"
 #include "QuickSort.h"
+#include "HeapSort.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -332,6 +333,7 @@ void MainWindow::setupAnalyticsPage()
     // The mapping must match exactly the resource aliases
     algoSourceFiles["BubbleSort"]    = ":/source/bubbleSort.h";
     algoSourceFiles["CocktailSort"]  = ":/source/cocktailSort.h";
+    algoSourceFiles["HeapSort"]    = ":/source/heapSort.h";
     // add all other algorithms exactly as named in your dropdown
 
     for (auto it = algoSourceFiles.begin(); it != algoSourceFiles.end(); ++it) {
@@ -570,6 +572,7 @@ void MainWindow::registerAlgorithms()
     m_algorithms.push_back(std::make_unique<CocktailSort>());
     m_algorithms.push_back(std::make_unique<QuickSort>());
     m_algorithms.push_back(std::make_unique<BubbleSort>());
+    m_algorithms.push_back(std::make_unique<HeapSort>());
     // Add more algorithms here
 
     for (const auto& algo : m_algorithms) {

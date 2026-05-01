@@ -1,8 +1,8 @@
 #ifndef BUBBLESORT_H_
 #define BUBBLESORT_H_
 
-#include <iostream>
 #include <iterator>
+#include <algorithm>
 
 template <typename RandomAccessIterator>
 void bubbleSort(RandomAccessIterator begin, RandomAccessIterator end) {

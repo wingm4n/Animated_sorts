@@ -13,12 +13,15 @@ SOURCES += \
 
 HEADERS += \
     BubbleSort.h \
+    HeapSort.h \
     QuickSort.h \
     CocktailSort.h \
     SortingAlgorithm.h \
     SortingVisualizer.h \
+    HeapSort.h \
     mainwindow.h \
     sorts/bubbleSort.h \
+    sorts/heapSort.h \
     sorts/cocktailSort.h
 
 FORMS += \

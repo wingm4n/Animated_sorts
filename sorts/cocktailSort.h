@@ -1,17 +1,18 @@
 #ifndef COCKTAILSORT_H_
 #define COCKTAILSORT_H_
 
+#include <iterator>
+#include <algorithm>
+
 template<class _RandomIt>
 void cocktailSort(_RandomIt first, _RandomIt last) {
     if (first == last) return;
 
-    // Calculate size
     auto size = last - first;
     if (size <= 1) return;
 
-    // Pointers to the current bounds
     _RandomIt left = first;
-    _RandomIt right = last - 1;  // Points to last element
+    _RandomIt right = last - 1;
 
     while (left < right) {
         // Forward pass
