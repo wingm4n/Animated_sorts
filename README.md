@@ -1,5 +1,7 @@
 # Animated_sorts
-This repository contains different sorting algorithms implemented in C++ (mostly ) and a visual shell to run them.
+This repository contains different sorting algorithms implemented in C++ (iterators approach - standard for STL algorithms) and a visual shell to run them.
+Pick a sort (or add your own!), set visualization speed and more.
+Inspired by Wikipedia's sorting algorithms visualizations.
 
 # Interface
 ![](https://github.com/wingm4n/Animated_sorts/blob/main/Sort_visualizer_GIF.gif)
